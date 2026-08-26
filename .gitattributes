@@ -1,0 +1,21 @@
+# ===================================================================
+# SECURE CBT - CLICKONCE AUTO-UPDATE ATTRIBUTES
+# Prevents Git from altering line endings which breaks security hashes
+# ===================================================================
+
+# Treat all ClickOnce deployment files as binary (do not modify)
+*.application binary
+*.manifest binary
+*.deploy binary
+
+# Treat all compiled executable and library files as binary
+*.exe binary
+*.dll binary
+*.pdb binary
+*.zip binary
+
+# Ensure standard text files behave normally
+*.cs text
+*.xaml text
+*.xml text
+*.md text

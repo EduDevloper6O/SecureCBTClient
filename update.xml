@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<item>
+  <version>1.0.0.0</version>
+  <!-- Notice the URL ends in .exe now -->
+  <url>https://github.com/EduDevloper6O/SecureCBTClient/releases/download/v1.0.0.0/SecureCBTClient.exe</url>
+  <changelog>https://github.com/EduDevloper6O/SecureCBTClient/releases/tag/v1.0.0.0</changelog>
+  <mandatory>true</mandatory>
+</item>
