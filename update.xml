@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <item>
-  <version>1.0.0.0</version>
-  <!-- Notice the URL ends in .exe now -->
-  <url>https://github.com/EduDevloper6O/SecureCBTClient/releases/download/v1.0.0.0/SecureCBTClient.exe</url>
-  <changelog>https://github.com/EduDevloper6O/SecureCBTClient/releases/tag/v1.0.0.0</changelog>
-  <mandatory>true</mandatory>
+	<!-- The version must be HIGHER than the one currently installed on the computer -->
+	<version>1.0.0.1</version>
+
+	<!-- Direct download link to the installer in GitHub Releases -->
+	<url>https://github.com/EduDevloper6O/SecureCBTClient/releases/download/v1.0.0.1/SecureCBT_Installer.exe</url>
+
+	<!-- Link to show users what is new -->
+	<changelog>https://github.com/EduDevloper6O/SecureCBTClient/releases</changelog>
+
+	<mandatory>true</mandatory>
+
+	<!-- /SILENT tells Inno Setup to install the update in the background without making the user click "Next" -->
+	<args>/SILENT</args>
 </item>
