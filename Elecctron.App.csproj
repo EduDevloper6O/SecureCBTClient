@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>Elecctron</AssemblyName>
+    <RootNamespace>Elecctron.App</RootNamespace>
+    <Version>0.1.0</Version>
+    <DefaultItemExcludes>$(DefaultItemExcludes);work/**</DefaultItemExcludes>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Update="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

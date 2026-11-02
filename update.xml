@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<item>
+	<!-- This file is generated and attached to each GitHub Release by .github/workflows/release.yml. -->
+	<version>1.0.0.0</version>
+
+	<!-- Direct download link to the installer in GitHub Releases -->
+	<url>https://github.com/EduDevloper6O/SecureCBTClient/releases/download/v1.0.0.0/SecureCBT_Installer.exe</url>
+
+	<!-- Link to show users what is new -->
+	<changelog>https://github.com/EduDevloper6O/SecureCBTClient/releases</changelog>
+
+	<mandatory>true</mandatory>
+
+	<!-- /SILENT tells Inno Setup to install the update in the background without making the user click "Next" -->
+	<args>/SILENT</args>
+</item>

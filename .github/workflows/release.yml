@@ -1,0 +1,83 @@
+name: Release Secure CBT Client
+
+on:
+  push:
+    tags:
+      - 'v*.*.*.*'
+
+permissions:
+  contents: write
+
+env:
+  PROJECT: 'Elecctron CBT.csproj'
+  DOTNET_VERSION: '10.0.x'
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Read and validate release version
+        id: version
+        shell: pwsh
+        run: |
+          $version = $env:GITHUB_REF_NAME.TrimStart('v')
+          if ($version -notmatch '^\d+\.\d+\.\d+\.\d+$') {
+            throw "Tag '$env:GITHUB_REF_NAME' must use the format v1.2.3.4."
+          }
+          "version=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Publish self-contained Windows application
+        run: dotnet publish "${{ env.PROJECT }}" --configuration Release --runtime win-x64 --self-contained true --output publish -p:Version=${{ steps.version.outputs.version }} -p:AssemblyVersion=${{ steps.version.outputs.version }} -p:FileVersion=${{ steps.version.outputs.version }}
+
+      - name: Install Inno Setup
+        shell: pwsh
+        run: choco install innosetup --no-progress --yes
+
+      - name: Build installer
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force artifacts | Out-Null
+          $iscc = Join-Path ${env:ProgramFiles(x86)} 'Inno Setup 6\ISCC.exe'
+          if (-not (Test-Path $iscc)) {
+            throw "Inno Setup compiler was not found at $iscc."
+          }
+          & $iscc /DAppVersion="${{ steps.version.outputs.version }}" installer/SecureCBT.iss
+          if ($LASTEXITCODE -ne 0) {
+            throw "Inno Setup failed with exit code $LASTEXITCODE."
+          }
+
+      - name: Generate update manifest
+        shell: pwsh
+        run: |
+          $repository = "${{ github.repository }}"
+          $tag = "${{ github.ref_name }}"
+          $version = "${{ steps.version.outputs.version }}"
+          $manifest = @"
+          <?xml version="1.0" encoding="UTF-8"?>
+          <item>
+            <version>$version</version>
+            <url>https://github.com/$repository/releases/download/$tag/SecureCBT_Installer.exe</url>
+            <changelog>https://github.com/$repository/releases/tag/$tag</changelog>
+            <mandatory>true</mandatory>
+            <args>/SILENT</args>
+          </item>
+          "@
+          Set-Content -Path artifacts/update.xml -Value $manifest.Trim() -Encoding utf8
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          generate_release_notes: true
+          files: |
+            artifacts/SecureCBT_Installer.exe
+            artifacts/update.xml
